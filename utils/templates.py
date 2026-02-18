@@ -131,27 +131,24 @@ def modern_template(data):
         </div>
       </div>
       <div style="padding:20px 40px;">
-        <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+        <table style="width:100%;border-collapse:collapse;">
           <thead><tr><th style="padding:12px 15px;text-align:left;color:#666;font-weight:600;border-bottom:2px solid #f0f0f0;">#</th>{header_cells}</tr></thead>
           <tbody>{rows}</tbody>
-          <tfoot>
-            <tr>
-              <td colspan="{len(enabled)+1}" style="border:none;"></td>
-              <td colspan="2" style="border-top:1px solid #f0f0f0;"></td>
-            </tr>
-            <tr>
-              <td colspan="{len(enabled)+1}" style="border:none;"></td>
-              <td style="padding:8px 15px;text-align:right;color:#666;border:none;">Subtotal</td>
-              <td style="padding:8px 15px;text-align:right;border:none;">₹{data['subtotal']:.2f}</td>
-            </tr>
-            {gst_rows}
-            <tr>
-              <td colspan="{len(enabled)+1}" style="border:none;padding:0;"></td>
-              <td style="padding:15px;text-align:right;font-size:18px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">Total</td>
-              <td style="padding:15px;text-align:right;font-size:18px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">₹{data['grand_total']:.2f}</td>
-            </tr>
-          </tfoot>
         </table>
+
+        <div style="margin-top:10px;border-top:1px solid #f0f0f0;padding-top:10px;">
+          <div style="display:flex;justify-content:flex-end;padding:6px 0;">
+            <span style="color:#666;min-width:120px;text-align:right;padding-right:20px;">Subtotal</span>
+            <span style="min-width:100px;text-align:right;">₹{data['subtotal']:.2f}</span>
+          </div>
+          {gst_rows}
+          <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+            <div style="display:flex;border-radius:8px;overflow:hidden;">
+              <span style="padding:12px 20px;font-size:18px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">Total</span>
+              <span style="padding:12px 20px;font-size:18px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">₹{data['grand_total']:.2f}</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div style="padding:20px 40px;background:#fafafa;"><strong>Terms & Conditions</strong><p style="color:#666;font-size:13px;">{data.get('terms_conditions','')}</p></div>
       <div style="padding:20px 40px;text-align:center;color:#999;font-size:13px;border-top:1px solid #f0f0f0;">
