@@ -56,7 +56,7 @@ def classic_template(data):
         <div style="text-align:right;"><p><strong>Issue Date:</strong> {data['issue_date']}</p><p><strong>Due Date:</strong> {data['due_date']}</p></div>
       </div>
       <div style="padding:20px 30px;">
-        <table style="width:100%;border-collapse:collapse;">
+        <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
           <thead><tr><th style="padding:10px;background:#1a1a2e;color:white;text-align:center;width:40px;">#</th>{header_cells}</tr></thead>
           <tbody>{rows}</tbody>
           <tfoot>
@@ -94,8 +94,16 @@ def modern_template(data):
     gst_rows = ""
     if data.get("gst_enabled"):
         gst_rows = f"""
-        <tr><td colspan="4"></td><td style="padding:6px 15px;text-align:right;color:#666;">CGST ({data['cgst_percent']}%)</td><td style="padding:6px 15px;text-align:right;">₹{data['cgst_amount']:.2f}</td></tr>
-        <tr><td colspan="4"></td><td style="padding:6px 15px;text-align:right;color:#666;">SGST ({data['sgst_percent']}%)</td><td style="padding:6px 15px;text-align:right;">₹{data['sgst_amount']:.2f}</td></tr>"""
+        <tr>
+          <td colspan="{len(enabled)+1}" style="border:none;"></td>
+          <td style="padding:6px 15px;text-align:right;color:#666;border:none;">CGST ({data['cgst_percent']}%)</td>
+          <td style="padding:6px 15px;text-align:right;border:none;">₹{data['cgst_amount']:.2f}</td>
+        </tr>
+        <tr>
+          <td colspan="{len(enabled)+1}" style="border:none;"></td>
+          <td style="padding:6px 15px;text-align:right;color:#666;border:none;">SGST ({data['sgst_percent']}%)</td>
+          <td style="padding:6px 15px;text-align:right;border:none;">₹{data['sgst_amount']:.2f}</td>
+        </tr>"""
     return f"""
     <html>
     <head><style>
@@ -123,13 +131,25 @@ def modern_template(data):
         </div>
       </div>
       <div style="padding:20px 40px;">
-        <table style="width:100%;border-collapse:collapse;">
+        <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
           <thead><tr><th style="padding:12px 15px;text-align:left;color:#666;font-weight:600;border-bottom:2px solid #f0f0f0;">#</th>{header_cells}</tr></thead>
           <tbody>{rows}</tbody>
           <tfoot>
-            <tr><td colspan="{len(enabled)+1}"></td><td style="padding:8px 15px;text-align:right;color:#666;">Subtotal</td><td style="padding:8px 15px;text-align:right;">₹{data['subtotal']:.2f}</td></tr>
+            <tr>
+              <td colspan="{len(enabled)+1}" style="border:none;"></td>
+              <td colspan="2" style="border-top:1px solid #f0f0f0;"></td>
+            </tr>
+            <tr>
+              <td colspan="{len(enabled)+1}" style="border:none;"></td>
+              <td style="padding:8px 15px;text-align:right;color:#666;border:none;">Subtotal</td>
+              <td style="padding:8px 15px;text-align:right;border:none;">₹{data['subtotal']:.2f}</td>
+            </tr>
             {gst_rows}
-            <tr><td colspan="{len(enabled)+1}"></td><td style="padding:15px;text-align:right;font-size:20px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-radius:8px 0 0 8px;">Total</td><td style="padding:15px;text-align:right;font-size:20px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-radius:0 8px 8px 0;">₹{data['grand_total']:.2f}</td></tr>
+            <tr>
+              <td colspan="{len(enabled)+1}" style="border:none;padding:0;"></td>
+              <td style="padding:15px;text-align:right;font-size:18px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">Total</td>
+              <td style="padding:15px;text-align:right;font-size:18px;font-weight:700;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">₹{data['grand_total']:.2f}</td>
+            </tr>
           </tfoot>
         </table>
       </div>
@@ -178,7 +198,7 @@ def minimal_template(data):
         <div style="color:#555;white-space:pre-line;">{data['client_address']}</div></div>
         <div style="text-align:right;font-size:14px;"><div><span style="color:#888;">Issue Date: </span>{data['issue_date']}</div><div><span style="color:#888;">Due Date: </span>{data['due_date']}</div></div>
       </div>
-      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
         <thead><tr><th style="padding:10px;text-align:left;border-bottom:1px solid #000;">#</th>{header_cells}</tr></thead>
         <tbody>{rows}</tbody>
         <tfoot>
