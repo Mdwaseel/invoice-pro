@@ -43,8 +43,8 @@ def show_auth(supabase):
 
             st.session_state.user = profile
             st.session_state.role = profile["role"]
-            from utils.auth import save_session_cookie
-            save_session_cookie(profile["id"], profile["role"])
+            from utils.auth import save_session
+            save_session(profile["id"])
             st.rerun()
 
     with tab2:

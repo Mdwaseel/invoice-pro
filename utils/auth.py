@@ -1,11 +1,6 @@
 import streamlit as st
 import bcrypt
-import extra_streamlit_components as stx
 from datetime import datetime, date
-
-@st.cache_resource
-def get_cookie_manager():
-    return stx.CookieManager(key="cookie_manager")
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
@@ -14,13 +9,8 @@ def verify_password(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode(), hashed.encode())
 
 def logout():
-    try:
-        cm = get_cookie_manager()
-        cm.delete("user_id", key="logout_uid")
-        cm.delete("user_role", key="logout_role")
-    except:
-        pass
     st.session_state.clear()
+    st.query_params.clear()
 
 def check_access(supabase, user_id: str) -> bool:
     try:
@@ -41,12 +31,12 @@ def check_access(supabase, user_id: str) -> bool:
         return False
 
 def restore_session(supabase):
-    """Try to restore session from cookies on page refresh."""
+    """Try to restore session from query params on page refresh."""
     if st.session_state.get("user"):
         return True  # Already logged in
+
     try:
-        cm = get_cookie_manager()
-        user_id = cm.get("user_id")
+        user_id = st.query_params.get("uid")
         if user_id:
             res = supabase.table("profiles").select("*").eq(
                 "id", user_id
@@ -59,11 +49,6 @@ def restore_session(supabase):
         pass
     return False
 
-def save_session_cookie(user_id: str, role: str):
-    """Save session to cookies after login."""
-    try:
-        cm = get_cookie_manager()
-        cm.set("user_id", user_id, key="save_uid")
-        cm.set("user_role", role, key="save_role")
-    except:
-        pass
+def save_session(user_id: str):
+    """Save user_id to query params to persist across refresh."""
+    st.query_params["uid"] = user_id
