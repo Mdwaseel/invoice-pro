@@ -54,25 +54,34 @@ def show_invoices(supabase):
                     st.rerun()
 
             if st.button("📄 View & Download PDF", key=f"pdf_{inv['id']}"):
-                # Parse items
                 items = inv.get("items", [])
                 if isinstance(items, str):
                     items = json.loads(items)
-
-                # Get user settings for template/branding
                 settings = get_user_settings(supabase, inv["user_id"])
                 inv_data = {**settings, **inv, "items": items}
-
-                # Show HTML preview
                 html = render_invoice(inv.get("template", "classic"), inv_data)
                 st.components.v1.html(html, height=800, scrolling=True)
 
-                # Generate and offer PDF download
-                pdf_bytes = generate_pdf(inv_data)
-                st.download_button(
-                    "💾 Download PDF",
-                    data=pdf_bytes,
-                    file_name=f"{inv['invoice_number']}.pdf",
-                    mime="application/pdf",
-                    key=f"dl_{inv['id']}"
-                )
+                print_js = f"""
+                <script>
+                function printInv() {{
+                    var win = window.open('', '_blank');
+                    win.document.write(`{html.replace('`', chr(96))}`);
+                    win.document.close();
+                    win.focus();
+                    win.print();
+                }}
+                </script>
+                <button onclick="printInv()" style="
+                    background-color: #1a1a2e;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 15px;
+                    width: 100%;
+                    margin-top: 8px;
+                ">🖨️ Print / Save as PDF</button>
+                """
+                st.components.v1.html(print_js, height=55)

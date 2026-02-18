@@ -135,6 +135,7 @@ def show_invoice_builder(supabase):
     st.components.v1.html(html, height=1100, scrolling=True)
 
     # Actions
+    # Actions
     c1, c2, c3 = st.columns(3)
     with c1:
         if st.button("💾 Save Invoice", type="primary", use_container_width=True):
@@ -167,12 +168,27 @@ def show_invoice_builder(supabase):
             st.rerun()
 
     with c2:
-        if st.button("📥 Download PDF", use_container_width=True):
-            from utils.pdf_generator import generate_pdf
-            pdf_bytes = generate_pdf(invoice_data)
-            st.download_button(
-                "💾 Save PDF",
-                data=pdf_bytes,
-                file_name=f"{invoice_number}.pdf",
-                mime="application/pdf"
-            )
+        # Print to PDF button — uses browser print which matches preview exactly
+        print_js = f"""
+        <script>
+        function printInvoice() {{
+            var win = window.open('', '_blank');
+            win.document.write(`{html.replace('`', chr(96))}`);
+            win.document.close();
+            win.focus();
+            win.print();
+        }}
+        </script>
+        <button onclick="printInvoice()" style="
+            background-color: #1a1a2e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            width: 100%;
+            margin-top: 4px;
+        ">🖨️ Print / Save as PDF</button>
+        """
+        st.components.v1.html(print_js, height=50)
