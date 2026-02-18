@@ -169,7 +169,7 @@ def show_invoice_builder(supabase):
     with c2:
         if st.button("📥 Download PDF", use_container_width=True):
             from utils.pdf_generator import generate_pdf
-            pdf_bytes = generate_pdf(html)
+            pdf_bytes = generate_pdf(invoice_data)
             st.download_button(
                 "💾 Save PDF",
                 data=pdf_bytes,
