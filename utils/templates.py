@@ -46,7 +46,7 @@ def classic_template(data):
     }}
     </style></head>
     <body style="font-family:Arial,sans-serif;margin:0;padding:20px;color:#333;">
-    <div style="max-width:800px;margin:auto;border:2px solid #1a1a2e;border-radius:8px;overflow:hidden;">
+    <div class="invoice-wrapper" style="max-width:800px;margin:auto;border:2px solid #1a1a2e;border-radius:8px;overflow:hidden;">
       <div style="background:#1a1a2e;color:white;padding:30px;display:flex;justify-content:space-between;align-items:center;">
         <div>{logo}<h1 style="margin:10px 0 0;font-size:28px;">{data['company_name']}</h1></div>
         <div style="text-align:right;"><h2 style="font-size:32px;margin:0;letter-spacing:3px;">{data['invoice_title']}</h2><p style="margin:5px 0;"># {data['invoice_number']}</p></div>
@@ -106,7 +106,7 @@ def modern_template(data):
     }}
     </style></head>
     <body style="font-family:'Segoe UI',sans-serif;margin:0;padding:30px;background:#f5f5f5;">
-    <div style="max-width:800px;margin:auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+    <div class="invoice-wrapper" style="max-width:800px;margin:auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
       <div style="padding:40px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;">
           <div>{logo}<h1 style="margin:15px 0 0;font-size:24px;">{data['company_name']}</h1></div>
@@ -167,7 +167,7 @@ def minimal_template(data):
     }}
     </style></head>
     <body style="font-family:Georgia,serif;margin:0;padding:40px;color:#222;">
-    <div style="max-width:780px;margin:auto;">
+    <div class="invoice-wrapper" style="max-width:780px;margin:auto;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #000;padding-bottom:20px;margin-bottom:30px;">
         <div>{logo}<div style="font-size:24px;font-weight:bold;margin-top:10px;">{data['company_name']}</div></div>
         <div style="text-align:right;"><div style="font-size:36px;letter-spacing:5px;font-weight:300;">{data['invoice_title']}</div><div style="font-size:14px;color:#666;">No. {data['invoice_number']}</div></div>

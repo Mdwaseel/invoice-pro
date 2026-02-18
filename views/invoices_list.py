@@ -65,13 +65,57 @@ def show_invoices(supabase):
                 print_js = f"""
                 <script>
                 function printInvoice() {{
-                    var win = window.open('', '_blank');
-                    win.document.write(`{html.replace('`', chr(96))}`);
+                    var win = window.open('', '_blank', 'width=900,height=700');
+                    win.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                        <meta charset="utf-8">
+                        <style>
+                            @page {{
+                                size: A4;
+                                margin: 0;
+                            }}
+                            @media print {{
+                                * {{
+                                    -webkit-print-color-adjust: exact !important;
+                                    print-color-adjust: exact !important;
+                                    color-adjust: exact !important;
+                                }}
+                                html, body {{
+                                    width: 210mm;
+                                    margin: 0 !important;
+                                    padding: 0 !important;
+                                }}
+                                .invoice-wrapper {{
+                                    width: 100% !important;
+                                    max-width: 100% !important;
+                                    margin: 0 !important;
+                                    border: none !important;
+                                    box-shadow: none !important;
+                                    border-radius: 0 !important;
+                                }}
+                            }}
+                            @media screen {{
+                                body {{
+                                    background: #f0f0f0;
+                                    display: flex;
+                                    justify-content: center;
+                                    padding: 20px;
+                                }}
+                            }}
+                        </style>
+                        </head>
+                        <body>
+                        {html}
+                        </body>
+                        </html>
+                    `);
                     win.document.close();
                     win.focus();
                     setTimeout(function() {{
                         win.print();
-                    }}, 500);
+                    }}, 800);
                 }}
                 </script>
                 <button onclick="printInvoice()" style="
