@@ -68,7 +68,7 @@ def show_invoices(supabase):
                 st.components.v1.html(html, height=800, scrolling=True)
 
                 # Generate and offer PDF download
-                pdf_bytes = generate_pdf(inv_data)
+                pdf_bytes = generate_pdf(html)
                 st.download_button(
                     "💾 Download PDF",
                     data=pdf_bytes,
