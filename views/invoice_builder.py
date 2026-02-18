@@ -1,7 +1,6 @@
 import streamlit as st
 from datetime import datetime, timedelta
 from io import BytesIO
-from xhtml2pdf import pisa
 import json
 from utils.db import get_user_settings, save_user_settings, save_invoice, get_next_invoice_number, increment_invoice_counter
 from utils.templates import render_invoice
@@ -169,11 +168,11 @@ def show_invoice_builder(supabase):
 
     with c2:
         if st.button("📥 Download PDF", use_container_width=True):
-            buf = BytesIO()
-            pisa.CreatePDF(BytesIO(html.encode("utf-8")), dest=buf)
+            from utils.pdf_generator import generate_pdf
+            pdf_bytes = generate_pdf(invoice_data)
             st.download_button(
                 "💾 Save PDF",
-                data=buf.getvalue(),
+                data=pdf_bytes,
                 file_name=f"{invoice_number}.pdf",
                 mime="application/pdf"
             )
