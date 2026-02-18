@@ -9,8 +9,8 @@ from supabase import create_client
 
 @st.cache_resource
 def get_supabase():
-    url = os.environ.get("SUPABASE_URL", "")
-    key = os.environ.get("SUPABASE_KEY", "")
+    url = os.environ.get("SUPABASE_URL") or st.secrets.get("SUPABASE_URL", "")
+    key = os.environ.get("SUPABASE_KEY") or st.secrets.get("SUPABASE_KEY", "")
     return create_client(url, key)
 
 supabase = get_supabase()
@@ -20,22 +20,25 @@ if "user" not in st.session_state:
 if "role" not in st.session_state:
     st.session_state.role = None
 
+# Try to restore session from cookie on refresh
+from utils.auth import restore_session
+restore_session(supabase)
+
 if not st.session_state.user:
     from views.auth_page import show_auth
     show_auth(supabase)
 else:
     from utils.auth import check_access, logout
 
-    # Check if access is still valid
     if not check_access(supabase, st.session_state.user["id"]):
         st.error("⛔ Your access has been suspended or has expired. Contact the administrator.")
         if st.button("Logout"):
             logout()
+            st.rerun()
         st.stop()
 
     role = st.session_state.role
 
-    # Sidebar
     with st.sidebar:
         st.markdown("## 📄 Invoice Pro")
         st.markdown(f"👤 **{st.session_state.user.get('full_name','User')}**")
