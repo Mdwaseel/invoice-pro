@@ -176,7 +176,9 @@ def show_invoice_builder(supabase):
             win.document.write(`{html.replace('`', chr(96))}`);
             win.document.close();
             win.focus();
-            win.print();
+            setTimeout(function() {{
+                win.print();
+            }}, 500);
         }}
         </script>
         <button onclick="printInvoice()" style="

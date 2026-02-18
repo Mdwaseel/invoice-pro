@@ -64,15 +64,17 @@ def show_invoices(supabase):
 
                 print_js = f"""
                 <script>
-                function printInv() {{
+                function printInvoice() {{
                     var win = window.open('', '_blank');
                     win.document.write(`{html.replace('`', chr(96))}`);
                     win.document.close();
                     win.focus();
-                    win.print();
+                    setTimeout(function() {{
+                        win.print();
+                    }}, 500);
                 }}
                 </script>
-                <button onclick="printInv()" style="
+                <button onclick="printInvoice()" style="
                     background-color: #1a1a2e;
                     color: white;
                     border: none;
@@ -81,7 +83,7 @@ def show_invoices(supabase):
                     cursor: pointer;
                     font-size: 15px;
                     width: 100%;
-                    margin-top: 8px;
+                    margin-top: 4px;
                 ">🖨️ Print / Save as PDF</button>
                 """
                 st.components.v1.html(print_js, height=55)

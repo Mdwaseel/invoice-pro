@@ -37,7 +37,15 @@ def classic_template(data):
         <tr><td colspan="4" style="border:none;"></td><td colspan="2" style="padding:6px;text-align:right;">SGST ({data['sgst_percent']}%):</td><td style="padding:6px;text-align:right;">₹{data['sgst_amount']:.2f}</td></tr>
         """
     return f"""
-    <html><body style="font-family:Arial,sans-serif;margin:0;padding:20px;color:#333;">
+    <html>
+    <head><style>
+    @media print {{
+        * {{ -webkit-print-color-adjust: exact !important; 
+             print-color-adjust: exact !important; }}
+        body {{ margin: 0; }}
+    }}
+    </style></head>
+    <body style="font-family:Arial,sans-serif;margin:0;padding:20px;color:#333;">
     <div style="max-width:800px;margin:auto;border:2px solid #1a1a2e;border-radius:8px;overflow:hidden;">
       <div style="background:#1a1a2e;color:white;padding:30px;display:flex;justify-content:space-between;align-items:center;">
         <div>{logo}<h1 style="margin:10px 0 0;font-size:28px;">{data['company_name']}</h1></div>
@@ -89,7 +97,15 @@ def modern_template(data):
         <tr><td colspan="4"></td><td style="padding:6px 15px;text-align:right;color:#666;">CGST ({data['cgst_percent']}%)</td><td style="padding:6px 15px;text-align:right;">₹{data['cgst_amount']:.2f}</td></tr>
         <tr><td colspan="4"></td><td style="padding:6px 15px;text-align:right;color:#666;">SGST ({data['sgst_percent']}%)</td><td style="padding:6px 15px;text-align:right;">₹{data['sgst_amount']:.2f}</td></tr>"""
     return f"""
-    <html><body style="font-family:'Segoe UI',sans-serif;margin:0;padding:30px;background:#f5f5f5;">
+    <html>
+    <head><style>
+    @media print {{
+        * {{ -webkit-print-color-adjust: exact !important; 
+             print-color-adjust: exact !important; }}
+        body {{ margin: 0; }}
+    }}
+    </style></head>
+    <body style="font-family:'Segoe UI',sans-serif;margin:0;padding:30px;background:#f5f5f5;">
     <div style="max-width:800px;margin:auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
       <div style="padding:40px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;">
@@ -142,7 +158,15 @@ def minimal_template(data):
     if data.get("gst_enabled"):
         gst_rows = f"<tr><td colspan='{len(enabled)+1}' style='text-align:right;padding:6px;color:#555;'>CGST ({data['cgst_percent']}%): ₹{data['cgst_amount']:.2f}</td></tr><tr><td colspan='{len(enabled)+1}' style='text-align:right;padding:6px;color:#555;'>SGST ({data['sgst_percent']}%): ₹{data['sgst_amount']:.2f}</td></tr>"
     return f"""
-    <html><body style="font-family:Georgia,serif;margin:0;padding:40px;color:#222;">
+    <html>
+    <head><style>
+    @media print {{
+        * {{ -webkit-print-color-adjust: exact !important; 
+             print-color-adjust: exact !important; }}
+        body {{ margin: 0; }}
+    }}
+    </style></head>
+    <body style="font-family:Georgia,serif;margin:0;padding:40px;color:#222;">
     <div style="max-width:780px;margin:auto;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #000;padding-bottom:20px;margin-bottom:30px;">
         <div>{logo}<div style="font-size:24px;font-weight:bold;margin-top:10px;">{data['company_name']}</div></div>
